@@ -1,6 +1,7 @@
 // ignore_for_file: prefer_const_constructors, prefer_const_literals_to_create_immutables, prefer_final_fields
 
 import 'package:flutter/material.dart';
+import 'package:orocomputer_system/pages/addItems_pages.dart';
 import 'package:orocomputer_system/pages/home_page.dart';
 import 'package:orocomputer_system/utils/colors.dart';
 import 'package:google_nav_bar/google_nav_bar.dart';
@@ -19,7 +20,7 @@ class _DashboardState extends State<Dashboard> {
 
     static List<Widget> _widgetOptions = <Widget>[
       HomePage(),
-      Text('Add Items'),
+      AddItemsPages(),
       Text('Settings')
     ];
   @override

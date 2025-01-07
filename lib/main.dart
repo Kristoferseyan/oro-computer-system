@@ -31,6 +31,11 @@ class MyApp extends StatelessWidget {
       routes: {
         '/dashboard': (context) => Dashboard()
       },
+      theme: ThemeData(
+        textTheme: TextTheme(
+          headlineSmall: TextStyle(fontSize: 14, fontStyle: FontStyle.normal, color: Colors.white),
+        )
+      ),
     );
   }
 }

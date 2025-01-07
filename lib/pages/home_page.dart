@@ -81,7 +81,6 @@ class _HomePageState extends State<HomePage> {
                       crossAxisAlignment: CrossAxisAlignment.start,
                       mainAxisAlignment: MainAxisAlignment.end,
                       children: [
-                        Icon(Icons.computer),
                         Text("${product['name']}" ),
                         Text("₱${product['price']}"),
                         Text("Stock Remaining: ${product['stock']}",)

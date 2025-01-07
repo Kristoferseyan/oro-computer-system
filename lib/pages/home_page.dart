@@ -2,12 +2,43 @@
 
 import 'package:flutter/material.dart';
 import 'package:orocomputer_system/utils/colors.dart';
+import 'package:supabase_flutter/supabase_flutter.dart';
 
-class HomePage extends StatelessWidget {
+class HomePage extends StatefulWidget {
   HomePage({super.key});
 
   @override
+  State<HomePage> createState() => _HomePageState();
+}
+
+class _HomePageState extends State<HomePage> {
+
+    final supabase = Supabase.instance.client;
+
+    List<dynamic> products = [];
+
+
+    void fetchProducts() async {
+    final response = await supabase
+      .from('products')
+      .select();
+
+      setState(() {
+        products = response;
+      });
+  }
+
+    @override
+    void initState() {
+      super.initState();
+      fetchProducts();
+    }
+
+
+  @override
   Widget build(BuildContext context) {
+
+
     return Scaffold(
       backgroundColor: AppColors.background,
       body: Column(
@@ -34,14 +65,16 @@ class HomePage extends StatelessWidget {
               mainAxisSpacing: 10
               ), 
               
-              itemCount: 20,
+              itemCount: products.length,
 
               itemBuilder: (context, index) {
+                final product = products[index];
                 return Container(
                   decoration: BoxDecoration(
                     color: AppColors.box,
                     borderRadius: BorderRadius.circular(20)
                   ),
+
                   child: Padding(
                     padding: const EdgeInsets.all(8.0),
                     child: Column(
@@ -49,9 +82,9 @@ class HomePage extends StatelessWidget {
                       mainAxisAlignment: MainAxisAlignment.end,
                       children: [
                         Icon(Icons.computer),
-                        Text("Item Name: "),
-                        Text("Price:"),
-                        Text("Stock Remaining:")
+                        Text("${product['name']}" ),
+                        Text("₱${product['price']}"),
+                        Text("Stock Remaining: ${product['stock']}",)
                       ],
                     ),
                   )

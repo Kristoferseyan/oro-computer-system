@@ -9,12 +9,12 @@ import 'package:supabase_flutter/supabase_flutter.dart';
 void main() async {
 
   await dotenv.load(fileName: 'assets/auth.env');
-  final String? supabaseURL = dotenv.env['SUPABASE_URL'];
-  final String? supabaseAnonKey = dotenv.env['SUPABASE_ANON_KEY'];
+  final String supabaseURL = dotenv.env['SUPABASE_URL']!;
+  final String supabaseAnonKey = dotenv.env['SUPABASE_ANON_KEY']!;
 
   await Supabase.initialize(
-    anonKey: 'supabaseAnonKey',
-    url: 'supabaseURL'
+    anonKey: supabaseAnonKey,
+    url: supabaseURL
   );
 
   runApp(const MyApp());

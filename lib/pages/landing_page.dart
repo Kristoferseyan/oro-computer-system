@@ -3,7 +3,6 @@
 import 'package:flutter/material.dart';
 import 'package:flutter_dotenv/flutter_dotenv.dart';
 import 'package:orocomputer_system/utils/colors.dart';
-import 'package:orocomputer_system/utils/db_helper.dart';
 
 class LandingPage extends StatelessWidget {
   const LandingPage({super.key});
@@ -11,7 +10,6 @@ class LandingPage extends StatelessWidget {
   @override
   Widget build(BuildContext context) {
 
-    final dbService = DatabaseHelper();
 
 
     return Scaffold(

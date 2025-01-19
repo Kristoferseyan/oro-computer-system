@@ -1,3 +1,1 @@
-# orocomputer_system
-
-A new Flutter project.
+## **🚧 Project Status: In Development**

@@ -47,11 +47,19 @@ class _HomePageState extends State<HomePage> {
               child: Text(
                 "Search Bar",
                 style: TextStyle(color: Colors.white),
-              ),
+              ), 
             ),
           ),
+          SizedBox(height: 30,),
+
+          Padding(
+            padding: const EdgeInsets.only(right: 230),
+            child: Text("Available Stocks", 
+              style: TextStyle(color: Colors.white, fontSize: 20),),
+          ),
+          
           SizedBox(
-            height: 30,
+            height: 20,
           ),
           Expanded(child: GridView.builder(
             padding: EdgeInsets.only(left: 10, right: 10),

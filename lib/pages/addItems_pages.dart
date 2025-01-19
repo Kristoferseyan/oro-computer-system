@@ -28,8 +28,6 @@ class _AddItemsPagesState extends State<AddItemsPages> {
     int? stock = int.tryParse(itemStockController.text);
 
 
-
-
     final response = await Supabase.instance.client
     .from('products')
     .insert(
@@ -52,10 +50,6 @@ class _AddItemsPagesState extends State<AddItemsPages> {
     itemDescriptionController.dispose();
   }
 
-
-
-
-
   @override
   Widget build(BuildContext context) {
     return Scaffold(
@@ -73,8 +67,9 @@ class _AddItemsPagesState extends State<AddItemsPages> {
           Padding(
             padding: const EdgeInsets.only(left: 10, right: 10),
             child: TextField(
+              controller: itemNameController,
               decoration: InputDecoration(
-                  border: OutlineInputBorder(), labelText: 'Item Name'),
+                  border: OutlineInputBorder(), labelText: 'Item Name',), style: TextStyle(color: Colors.white),
             ),
           ),
           SizedBox(
@@ -86,8 +81,9 @@ class _AddItemsPagesState extends State<AddItemsPages> {
                 child: Padding(
                   padding: const EdgeInsets.only(left: 10),
                   child: TextField(
+                    controller: itemPriceController,
                     decoration: InputDecoration(
-                        border: OutlineInputBorder(), labelText: "Price"),
+                        border: OutlineInputBorder(), labelText: "Price"),  style: TextStyle(color: Colors.white),
                   ),
                 ),
               ),
@@ -98,8 +94,9 @@ class _AddItemsPagesState extends State<AddItemsPages> {
                 child: Padding(
                   padding: const EdgeInsets.only(right: 10),
                   child: TextField(
+                    controller: itemStockController,
                     decoration: InputDecoration(
-                        border: OutlineInputBorder(), labelText: 'Stock'),
+                        border: OutlineInputBorder(), labelText: 'Stock'),  style: TextStyle(color: Colors.white),
                   ),
                 ),
               ),
@@ -114,12 +111,14 @@ class _AddItemsPagesState extends State<AddItemsPages> {
               child: Column(
                 children: [
                   TextField(
+                    controller: itemDescriptionController,
                     decoration: InputDecoration(
                         border: OutlineInputBorder(),
-                        labelText: 'Specifications'),
-                    style: Theme.of(context).textTheme.headlineSmall,
-                    maxLines: 5,
-                    minLines: 3,
+                        labelText: 'Specifications'), 
+                    style:
+                      Theme.of(context).textTheme.headlineSmall,
+                      maxLines: 5,
+                      minLines: 3,
                   )
                 ],
               ),

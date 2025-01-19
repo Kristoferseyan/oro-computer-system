@@ -21,7 +21,7 @@ class _HomePageState extends State<HomePage> {
     void fetchProducts() async {
     final response = await supabase
       .from('products')
-      .select();
+      .select('*');
 
       setState(() {
         products = response;
@@ -37,20 +37,16 @@ class _HomePageState extends State<HomePage> {
 
   @override
   Widget build(BuildContext context) {
-
-
     return Scaffold(
       backgroundColor: AppColors.background,
       body: Column(
         children: [
           Padding(
             padding: const EdgeInsets.only(top: 30),
-            child: Container(
-              child: Center(
-                child: Text(
-                  "Search Bar",
-                  style: TextStyle(color: Colors.white),
-                ),
+            child: Center(
+              child: Text(
+                "Search Bar",
+                style: TextStyle(color: Colors.white),
               ),
             ),
           ),

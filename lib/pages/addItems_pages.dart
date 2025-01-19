@@ -4,9 +4,57 @@ import 'dart:ffi';
 
 import 'package:flutter/material.dart';
 import 'package:orocomputer_system/utils/colors.dart';
+import 'package:supabase_flutter/supabase_flutter.dart';
 
-class AddItemsPages extends StatelessWidget {
+class AddItemsPages extends StatefulWidget {
   const AddItemsPages({super.key});
+
+  @override
+  State<AddItemsPages> createState() => _AddItemsPagesState();
+}
+
+
+class _AddItemsPagesState extends State<AddItemsPages> {
+
+  final TextEditingController itemNameController = TextEditingController();
+  final TextEditingController itemPriceController = TextEditingController();
+  final TextEditingController itemStockController = TextEditingController();
+  final TextEditingController itemDescriptionController = TextEditingController();
+
+  void addItem() async{
+    String name = itemNameController.text;
+    int? price = int.tryParse(itemPriceController.text);
+    String description = itemDescriptionController.text;
+    int? stock = int.tryParse(itemStockController.text);
+
+
+
+
+    final response = await Supabase.instance.client
+    .from('products')
+    .insert(
+      {
+        'name': name,
+        'price': price,
+        'stock': stock,
+        'description': description,
+      }
+    );
+
+  }
+  
+  @override
+  void dispose(){
+    super.dispose();
+    itemNameController.dispose();
+    itemPriceController.dispose();
+    itemStockController.dispose();
+    itemDescriptionController.dispose();
+  }
+
+
+
+
 
   @override
   Widget build(BuildContext context) {
@@ -98,7 +146,7 @@ class AddItemsPages extends StatelessWidget {
           ),
           Padding(
             padding: const EdgeInsets.only(bottom: 170),
-            child: ElevatedButton(onPressed: (){} , child: Text("Add Item")),
+            child: ElevatedButton(onPressed: addItem , child: Text("Add Item")),
           )
         ],
       ),

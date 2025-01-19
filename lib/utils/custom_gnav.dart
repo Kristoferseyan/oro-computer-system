@@ -22,7 +22,7 @@ class CustomGnav extends StatelessWidget {
         ),
         child: SafeArea(
           child: Padding(
-            padding: const EdgeInsets.symmetric(horizontal: 20.0, vertical: 8),
+            padding: const EdgeInsets.symmetric(horizontal: 500, vertical: 8),
             child: GNav(
               rippleColor: Colors.grey[300]!,
               hoverColor: Colors.grey[100]!,

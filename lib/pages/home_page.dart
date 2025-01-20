@@ -10,10 +10,14 @@ class HomePage extends StatefulWidget {
 
   @override
   State<HomePage> createState() => _HomePageState();
+
+
 }
 
 class _HomePageState extends State<HomePage> {
   final supabase = Supabase.instance.client;
+
+    int selectedCategoryIndex = 0;
 
 //---------------------------LISTS--------------------------------------------//
 
@@ -56,6 +60,7 @@ class _HomePageState extends State<HomePage> {
         builder: (context) {
           return ItemDialogBox(
             itemName: product['name'].toString(),
+            itemSpecs: product['description'].toString(),
           );
         });
   }
@@ -127,14 +132,16 @@ class _HomePageState extends State<HomePage> {
                             itemCount: components.length,
                             itemBuilder: (context, index) {
                               final category = components[index];
+                              bool isSelected = selectedCategoryIndex == index;
                               return GestureDetector(
                                 onTap: () {
-                                  print(
-                                      "Selected category: ${category['name']}");
+                                  setState((){
+                                    selectedCategoryIndex = index;
+                                  });
                                 },
                                 child: Container(
                                   decoration: BoxDecoration(
-                                    color: Colors.black38,
+                                    color: isSelected ? Colors.black26 : Colors.black38,
                                     borderRadius: BorderRadius.circular(10),
                                   ),
                                   child: Column(
@@ -143,14 +150,15 @@ class _HomePageState extends State<HomePage> {
                                       Icon(
                                         category['icon'],
                                         size: 30,
-                                        color: Colors.white,
+                                        color: isSelected ? Colors.white : const Color.fromARGB(255, 187, 187, 187),
                                       ),
                                       SizedBox(height: 5),
                                       Text(
                                         category['name'],
                                         style: TextStyle(
                                           fontSize: 12,
-                                          color: Colors.white,
+                                          fontWeight: isSelected ? FontWeight.bold : FontWeight.normal ,
+                                          color: isSelected ? Colors.white : const Color.fromARGB(255, 187, 187, 187) ,
                                         ),
                                         textAlign: TextAlign.center,
                                       ),

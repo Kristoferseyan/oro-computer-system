@@ -6,4 +6,5 @@ class AppColors {
   static const Color secondary = Color(0xFF356668);
   static const Color accent = Color(0xFF6BC0C3);
   static const Color box = Color.fromARGB(243, 164, 192, 192);
+  static const Color cancel = Color.fromARGB(255, 137, 37, 30);
 }

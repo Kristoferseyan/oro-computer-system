@@ -16,11 +16,15 @@ class AddItemsPages extends StatefulWidget {
 
 class _AddItemsPagesState extends State<AddItemsPages> {
 
+  //---------------------------CONTROLLERS--------------------------------------------//
   final TextEditingController itemNameController = TextEditingController();
   final TextEditingController itemPriceController = TextEditingController();
   final TextEditingController itemStockController = TextEditingController();
   final TextEditingController itemDescriptionController = TextEditingController();
+  //---------------------------END-CONTROLLERS--------------------------------------------//
 
+
+  //---------------------------METHODS--------------------------------------------//
   void addItem() async{
     String name = itemNameController.text;
     int? price = int.tryParse(itemPriceController.text);
@@ -49,6 +53,9 @@ class _AddItemsPagesState extends State<AddItemsPages> {
     itemStockController.dispose();
     itemDescriptionController.dispose();
   }
+
+  //---------------------------END-METHODS--------------------------------------------//
+
 
   @override
   Widget build(BuildContext context) {

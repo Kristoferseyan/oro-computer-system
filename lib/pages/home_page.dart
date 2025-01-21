@@ -61,6 +61,7 @@ class _HomePageState extends State<HomePage> {
           return ItemDialogBox(
             itemName: product['name'].toString(),
             itemSpecs: product['description'].toString(),
+            itemStock: product['stock'].toString(),
           );
         });
   }

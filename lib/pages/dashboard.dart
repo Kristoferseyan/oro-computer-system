@@ -20,7 +20,7 @@ class _DashboardState extends State<Dashboard> {
 
     static List<Widget> _widgetOptions = <Widget>[
       HomePage(),
-      AddItemsPages(),
+      AddItemsPage(),
       Text('Settings')
     ];
   @override

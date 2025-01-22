@@ -17,20 +17,14 @@ class HomePage extends StatefulWidget {
 class _HomePageState extends State<HomePage> {
   final supabase = Supabase.instance.client;
 
-    int selectedCategoryIndex = 0;
+    int selectedCategoryIndex = -1;
+
+
 
 //---------------------------LISTS--------------------------------------------//
 
   //List for prudct items
   List<dynamic> products = [];
-
-  void fetchProducts() async {
-    final response = await supabase.from('products').select('*');
-
-    setState(() {
-      products = response;
-    });
-  }
 
   //List for category name and icons
   List<Map<String, dynamic>> components = [
@@ -50,10 +44,31 @@ class _HomePageState extends State<HomePage> {
   @override
   void initState() {
     super.initState();
-    fetchProducts();
+    fetchAllProducts();
   }
 
-  // Function when an item is selected
+  // Method to fetch all products from database
+  void fetchAllProducts() async {
+    final response = await supabase.from('products').select('*');
+
+    setState(() {
+      products = response;
+      selectedCategoryIndex = -1;
+    });
+  }
+
+  void fetchSelectedCategory() async {
+    final selectedCategoryName = components[selectedCategoryIndex]['name'];
+
+    final response = await supabase.from('products').select('*').eq('category', selectedCategoryName);
+
+    setState(() {
+      products = response;
+    });
+
+  }
+
+  // Method when an item is selected
   void selectItem(Map<String, dynamic> product) {
     showDialog(
         context: context,
@@ -65,6 +80,8 @@ class _HomePageState extends State<HomePage> {
           );
         });
   }
+
+
 //---------------------------END-METHODS--------------------------------------------//
 
   @override
@@ -114,10 +131,24 @@ class _HomePageState extends State<HomePage> {
                       children: [
                         Padding(
                           padding: EdgeInsets.only(left: 14, top: 8),
-                          child: Text(
-                            "Categories",
-                            style: TextStyle(
-                                fontSize: 24, fontWeight: FontWeight.bold, color: Colors.white),
+                          child: Row(
+                            children: [
+                              Text(
+                                "Categories",
+                                style: TextStyle(
+                                    fontSize: 24, fontWeight: FontWeight.bold, color: Colors.white),
+                              ),
+                              Spacer(),
+                              Padding(
+                                padding: const EdgeInsets.only(right: 10),
+                                child: ElevatedButton(
+                                  style: ElevatedButton.styleFrom(
+                                    backgroundColor: AppColors.box
+                                  ),
+                                  onPressed: fetchAllProducts, 
+                                  child: Text("All", style: TextStyle(color: Colors.black),)),
+                              )
+                            ],
                           ),
                         ),
                         Expanded(
@@ -132,13 +163,16 @@ class _HomePageState extends State<HomePage> {
                             ),
                             itemCount: components.length,
                             itemBuilder: (context, index) {
+
                               final category = components[index];
                               bool isSelected = selectedCategoryIndex == index;
+
                               return GestureDetector(
                                 onTap: () {
                                   setState((){
                                     selectedCategoryIndex = index;
                                   });
+                                  fetchSelectedCategory();
                                 },
                                 child: Container(
                                   decoration: BoxDecoration(

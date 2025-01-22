@@ -32,7 +32,7 @@ class _HomePageState extends State<HomePage> {
     {"name": "GPU", "icon": Icons.graphic_eq},
     {"name": "RAM", "icon": Icons.memory},
     {"name": "Motherboard", "icon": Icons.settings_applications},
-    {"name": "Storge", "icon": Icons.storage},
+    {"name": "Storage", "icon": Icons.storage},
     {"name": "Laptop", "icon": Icons.laptop},
     {"name": "Accessories", "icon": Icons.headphones},
     {"name": "Printer", "icon": Icons.print},

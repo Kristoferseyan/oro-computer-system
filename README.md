@@ -4,7 +4,7 @@
 This is a practice project desktop application that serves as a management system for Oro Computer Center. The purpose of this project is to practice and enhance my Flutter/Dart skills. Please note that the project is still in development, and some features may be incomplete or subject to change.
 
 ## Features
-- Product management (add, update, delete, and view products)
+- Product management
 - Inventory tracking and categorization
 - User-friendly interface built with Flutter
 
@@ -17,7 +17,7 @@ To install and run the software, follow these steps:
 4. Open the extracted folder and run the application executable file.
 
 ### Requirements
-- A Windows or macOS desktop environment
+- A Windows desktop environment
 - Ensure that the system has the necessary dependencies to run Flutter-based applications.
 
 ## 🚧 Project Status: In Development

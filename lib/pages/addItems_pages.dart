@@ -102,7 +102,7 @@ class _AddItemsPageState extends State<AddItemsPage> {
           constraints: BoxConstraints(maxWidth: 970),
           padding: EdgeInsets.all(16),
           decoration: BoxDecoration(
-            color: const Color.fromARGB(167, 53, 102, 104),
+            color: const Color.fromARGB(255, 62, 76, 76),
             borderRadius: BorderRadius.circular(16),
             boxShadow: [
               BoxShadow(
@@ -136,7 +136,7 @@ class _AddItemsPageState extends State<AddItemsPage> {
                     ),
 
                     SizedBox(width: 16),
-                    
+
                     Expanded(
                       child: buildTextField("Stock", itemStockController,
                           keyboardType: TextInputType.number),

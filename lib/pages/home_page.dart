@@ -1,7 +1,7 @@
 // ignore_for_file: prefer_const_constructors, prefer_const_literals_to_create_immutables
 
 import 'package:flutter/material.dart';
-import 'package:orocomputer_system/components/item_dialog_box.dart';
+import 'package:orocomputer_system/components/item_dBox.dart';
 import 'package:orocomputer_system/utils/colors.dart';
 import 'package:supabase_flutter/supabase_flutter.dart';
 

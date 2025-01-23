@@ -33,6 +33,13 @@ class _AddItemsPageState extends State<AddItemsPage> {
   String? selectedCategory;
 
   //---------------------------METHODS--------------------------------------------//
+  
+  String? selectedCategoryIndex;
+
+  void selectCategory() async{
+    
+  }
+  
   void addItem() async {
     String name = itemNameController.text.trim();
     int? price = int.tryParse(itemPriceController.text.trim());
@@ -163,15 +170,12 @@ class _AddItemsPageState extends State<AddItemsPage> {
                       ),
                     ),
                     SizedBox(height: 10),
-
                     Wrap(
                       spacing: 10,
                       runSpacing: 10,
-                      alignment:
-                          WrapAlignment.start,
+                      alignment: WrapAlignment.start,
                       children: categories.map((category) {
-                        bool isSelected =
-                            category['name'] == selectedCategory;
+                        bool isSelected = category['name'] == selectedCategory;
                         return GestureDetector(
                           onTap: () {
                             setState(() {
@@ -194,8 +198,7 @@ class _AddItemsPageState extends State<AddItemsPage> {
                               ),
                             ),
                             child: Row(
-                              mainAxisSize:
-                                  MainAxisSize.min,
+                              mainAxisSize: MainAxisSize.min,
                               children: [
                                 Icon(
                                   category['icon'],
@@ -291,23 +294,56 @@ class _AddItemsPageState extends State<AddItemsPage> {
                   Text(
                     "Add Stock",
                     style: TextStyle(
-                      color: Colors.white ,
+                      color: Colors.white,
                       fontSize: 28,
                       fontWeight: FontWeight.bold,
                     ),
                     textAlign: TextAlign.center,
                   ),
-                  SizedBox(height: 20),
-                  buildTextField(
-                    "Stock ID",
-                    TextEditingController(),
-                    keyboardType: TextInputType.text,
-                  ),
-                  SizedBox(height: 20),
-                  buildTextField(
-                    "Additional Stock",
-                    TextEditingController(),
-                    keyboardType: TextInputType.number,
+                  SizedBox(height: 30,),
+
+                  Wrap(
+                    spacing: 10,
+                    runSpacing: 10,
+                    alignment: WrapAlignment.start,
+                    children: categories.map((category) {
+                      return GestureDetector(
+                        onTap: () {
+                        },
+                        child: Container(
+                          width: 153,
+                          height: 50,
+                          padding: EdgeInsets.symmetric(vertical: 10, horizontal: 16),
+                          decoration: BoxDecoration(
+                            color: const Color.fromARGB(177, 167, 199, 200),
+                            borderRadius: BorderRadius.circular(12),
+                            border: Border.all(
+                              color: const Color.fromARGB(255, 255, 255, 255),
+                              width: 1,
+                            ),
+                          ),
+                          child: Row(
+                            mainAxisSize: MainAxisSize.min,
+                            children: [
+                              Icon(
+                                category['icon'],
+                                color:Colors.white,
+                                size: 20,
+                              ),
+                              SizedBox(width: 8),
+                              Text(
+                                category['name'],
+                                style: TextStyle(
+                                  color: Colors.white,
+                                  fontSize: 14,
+                                  fontWeight: FontWeight.bold,
+                                ),
+                              ),
+                            ],
+                          ),
+                        ),
+                      );
+                    }).toList(),
                   ),
                   SizedBox(height: 30),
                   ElevatedButton(

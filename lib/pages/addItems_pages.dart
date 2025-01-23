@@ -97,171 +97,241 @@ class _AddItemsPageState extends State<AddItemsPage> {
   Widget build(BuildContext context) {
     return Scaffold(
       backgroundColor: AppColors.background,
-      body: Center(
-        child: Container(
-          constraints: BoxConstraints(maxWidth: 970),
-          padding: EdgeInsets.all(16),
-          decoration: BoxDecoration(
-            color: const Color.fromARGB(255, 62, 76, 76),
-            borderRadius: BorderRadius.circular(16),
-            boxShadow: [
-              BoxShadow(
-                color: Colors.black38,
-                blurRadius: 10,
-                offset: Offset(0, 4),
-              ),
-            ],
-          ),
-          child: SingleChildScrollView(
-            child: Column(
-              crossAxisAlignment: CrossAxisAlignment.stretch,
-              children: [
-                Text(
-                  "Add Item",
-                  style: TextStyle(
-                    color: Colors.white,
-                    fontSize: 28,
-                    fontWeight: FontWeight.bold,
+      body: Container(
+        constraints: BoxConstraints(maxWidth: 1900),
+        padding: EdgeInsets.all(16),
+        child: Row(
+          crossAxisAlignment: CrossAxisAlignment.start,
+          children: [
+            //---------------------------ADD-ITEM-CONTAINER--------------------------------------------//
+            Container(
+              width: 800,
+              padding: EdgeInsets.all(16),
+              decoration: BoxDecoration(
+                color: const Color.fromARGB(255, 62, 76, 76),
+                borderRadius: BorderRadius.circular(16),
+                boxShadow: [
+                  BoxShadow(
+                    color: Colors.black38,
+                    blurRadius: 10,
+                    offset: Offset(0, 4),
                   ),
-                  textAlign: TextAlign.center,
-                ),
-                SizedBox(height: 20),
-                buildTextField("Item Name", itemNameController),
-                SizedBox(height: 20),
-                Row(
+                ],
+              ),
+              child: SingleChildScrollView(
+                child: Column(
+                  crossAxisAlignment: CrossAxisAlignment.stretch,
                   children: [
-                    Expanded(
-                      child: buildTextField("Price", itemPriceController,
-                          keyboardType: TextInputType.number),
+                    Text(
+                      "Add Item",
+                      style: TextStyle(
+                        color: Colors.white,
+                        fontSize: 28,
+                        fontWeight: FontWeight.bold,
+                      ),
+                      textAlign: TextAlign.center,
                     ),
+                    SizedBox(height: 20),
+                    buildTextField("Item Name", itemNameController),
+                    SizedBox(height: 20),
+                    Row(
+                      children: [
+                        Expanded(
+                          child: buildTextField("Price", itemPriceController,
+                              keyboardType: TextInputType.number),
+                        ),
+                        SizedBox(width: 16),
+                        Expanded(
+                          child: buildTextField("Stock", itemStockController,
+                              keyboardType: TextInputType.number),
+                        ),
+                      ],
+                    ),
+                    SizedBox(height: 20),
+                    buildTextField(
+                      "Specifications",
+                      itemDescriptionController,
+                      maxLines: 5,
+                    ),
+                    SizedBox(height: 20),
+                    Text(
+                      "Select Category",
+                      style: TextStyle(
+                        color: Colors.white,
+                        fontSize: 16,
+                        fontWeight: FontWeight.bold,
+                      ),
+                    ),
+                    SizedBox(height: 10),
 
-                    SizedBox(width: 16),
-
-                    Expanded(
-                      child: buildTextField("Stock", itemStockController,
-                          keyboardType: TextInputType.number),
+                    Wrap(
+                      spacing: 10,
+                      runSpacing: 10,
+                      alignment:
+                          WrapAlignment.start,
+                      children: categories.map((category) {
+                        bool isSelected =
+                            category['name'] == selectedCategory;
+                        return GestureDetector(
+                          onTap: () {
+                            setState(() {
+                              selectedCategory = category['name'];
+                            });
+                          },
+                          child: Container(
+                            padding: EdgeInsets.symmetric(
+                                vertical: 10, horizontal: 16),
+                            decoration: BoxDecoration(
+                              color: isSelected
+                                  ? const Color.fromARGB(177, 167, 199, 200)
+                                  : const Color.fromARGB(107, 167, 199, 200),
+                              borderRadius: BorderRadius.circular(12),
+                              border: Border.all(
+                                color: isSelected
+                                    ? const Color.fromARGB(255, 255, 255, 255)
+                                    : Colors.grey,
+                                width: 1,
+                              ),
+                            ),
+                            child: Row(
+                              mainAxisSize:
+                                  MainAxisSize.min,
+                              children: [
+                                Icon(
+                                  category['icon'],
+                                  color: isSelected
+                                      ? Colors.white
+                                      : const Color.fromARGB(
+                                          101, 255, 255, 255),
+                                  size: 20,
+                                ),
+                                SizedBox(width: 8),
+                                Text(
+                                  category['name'],
+                                  style: TextStyle(
+                                    color: isSelected
+                                        ? Colors.white
+                                        : const Color.fromARGB(
+                                            101, 255, 255, 255),
+                                    fontSize: 14,
+                                    fontWeight: isSelected
+                                        ? FontWeight.bold
+                                        : FontWeight.normal,
+                                  ),
+                                ),
+                              ],
+                            ),
+                          ),
+                        );
+                      }).toList(),
+                    ),
+                    SizedBox(height: 20),
+                    GestureDetector(
+                      onTap: () {
+                        ScaffoldMessenger.of(context).showSnackBar(
+                          SnackBar(content: Text("Image upload clicked")),
+                        );
+                      },
+                      child: Container(
+                        height: 150,
+                        width: double.infinity,
+                        decoration: BoxDecoration(
+                          border: Border.all(color: Colors.grey, width: 1),
+                          borderRadius: BorderRadius.circular(12),
+                          color: const Color.fromARGB(177, 167, 199, 200),
+                        ),
+                        child: Center(
+                          child: Text(
+                            "Upload Item Image Here",
+                            style: TextStyle(color: Colors.white),
+                          ),
+                        ),
+                      ),
+                    ),
+                    SizedBox(height: 30),
+                    ElevatedButton(
+                      onPressed: addItem,
+                      style: ElevatedButton.styleFrom(
+                        backgroundColor: AppColors.secondary,
+                        padding: EdgeInsets.symmetric(vertical: 16),
+                        shape: RoundedRectangleBorder(
+                          borderRadius: BorderRadius.circular(12),
+                        ),
+                      ),
+                      child: Text(
+                        "Add Item",
+                        style: TextStyle(fontSize: 16, color: Colors.white),
+                      ),
                     ),
                   ],
                 ),
-
-                SizedBox(height: 20),
-                buildTextField(
-                  "Specifications",
-                  itemDescriptionController,
-                  maxLines: 5,
-                ),
-
-                SizedBox(height: 20),
-
-                Text(
-                  "Select Category",
-                  style: TextStyle(
-                    color: Colors.white,
-                    fontSize: 16,
-                    fontWeight: FontWeight.bold,
+              ),
+            ),
+            //---------------------------END-ADD-ITEM-CONTAINER--------------------------------------------//
+            SizedBox(width: 24),
+            //---------------------------ADD-STOCK-CONTAINER--------------------------------------------//
+            Container(
+              height: 760,
+              width: 550,
+              padding: EdgeInsets.all(16),
+              decoration: BoxDecoration(
+                color: const Color.fromARGB(255, 62, 76, 76),
+                borderRadius: BorderRadius.circular(16),
+                boxShadow: [
+                  BoxShadow(
+                    color: Colors.black38,
+                    blurRadius: 10,
+                    offset: Offset(0, 4),
                   ),
-                ),
-
-                SizedBox(height: 10),
-
-                SingleChildScrollView(
-                  scrollDirection: Axis.horizontal,
-                  child: Row(
-                    children: categories.map((category) {
-                      bool isSelected = category['name'] == selectedCategory;
-                      return GestureDetector(
-                        onTap: () {
-                          setState(() {
-                            selectedCategory = category['name'];
-                          });
-                        },
-
-                        child: Container(
-                          padding: EdgeInsets.symmetric(
-                              vertical: 10, horizontal: 16),
-                          margin: EdgeInsets.only(right: 8),
-                          decoration: BoxDecoration(
-                            color: isSelected
-                                ? const Color.fromARGB(177, 167, 199, 200)
-                                : const Color.fromARGB(107, 167, 199, 200),
-                            borderRadius: BorderRadius.circular(12),
-                            border: Border.all(
-                              color: isSelected
-                                  ? const Color.fromARGB(255, 255, 255, 255)
-                                  : Colors.grey,
-                              width: 1,
-                            ),
-                          ),
-
-                          child: Row(
-                            children: [
-                              Icon(category['icon'],
-                                  color: isSelected
-                                      ? Colors.white
-                                      : const Color.fromARGB(
-                                          101, 255, 255, 255),
-                                  size: 20),
-                              SizedBox(width: 8),
-                              Text(
-                                category['name'],
-                                style: TextStyle(
-                                  color: isSelected
-                                      ? Colors.white
-                                      : const Color.fromARGB(
-                                          101, 255, 255, 255),
-                                  fontSize: 14,
-                                  fontWeight: isSelected
-                                      ? FontWeight.bold
-                                      : FontWeight.normal,
-                                ),
-                              ),
-                            ],
-                          ),
-                        ),
-                      );
-                    }).toList(),
-                  ),
-                ),
-                SizedBox(height: 20),
-                GestureDetector(
-                  onTap: () {
-                    ScaffoldMessenger.of(context).showSnackBar(
-                      SnackBar(content: Text("Image upload clicked")),
-                    );
-                  },
-                  child: Container(
-                    height: 150,
-                    width: double.infinity,
-                    decoration: BoxDecoration(
-                      border: Border.all(color: Colors.grey, width: 1),
-                      borderRadius: BorderRadius.circular(12),
-                      color: const Color.fromARGB(177, 167, 199, 200),
+                ],
+              ),
+              child: Column(
+                crossAxisAlignment: CrossAxisAlignment.stretch,
+                children: [
+                  Text(
+                    "Add Stock",
+                    style: TextStyle(
+                      color: Colors.white ,
+                      fontSize: 28,
+                      fontWeight: FontWeight.bold,
                     ),
-                    child: Center(
-                      child: Text(
-                        "Upload Item Image Here",
-                        style: TextStyle(color: Colors.white),
+                    textAlign: TextAlign.center,
+                  ),
+                  SizedBox(height: 20),
+                  buildTextField(
+                    "Stock ID",
+                    TextEditingController(),
+                    keyboardType: TextInputType.text,
+                  ),
+                  SizedBox(height: 20),
+                  buildTextField(
+                    "Additional Stock",
+                    TextEditingController(),
+                    keyboardType: TextInputType.number,
+                  ),
+                  SizedBox(height: 30),
+                  ElevatedButton(
+                    onPressed: () {
+                      ScaffoldMessenger.of(context).showSnackBar(
+                        SnackBar(content: Text("Stock added successfully!")),
+                      );
+                    },
+                    style: ElevatedButton.styleFrom(
+                      backgroundColor: AppColors.secondary,
+                      padding: EdgeInsets.symmetric(vertical: 16),
+                      shape: RoundedRectangleBorder(
+                        borderRadius: BorderRadius.circular(12),
                       ),
                     ),
-                  ),
-                ),
-                SizedBox(height: 30),
-                ElevatedButton(
-                  onPressed: addItem,
-                  style: ElevatedButton.styleFrom(
-                    padding: EdgeInsets.symmetric(vertical: 16),
-                    shape: RoundedRectangleBorder(
-                      borderRadius: BorderRadius.circular(12),
+                    child: Text(
+                      "Add Stock",
+                      style: TextStyle(fontSize: 16, color: Colors.white),
                     ),
                   ),
-                  child: Text(
-                    "Add Item",
-                    style: TextStyle(fontSize: 16),
-                  ),
-                ),
-              ],
+                ],
+              ),
             ),
-          ),
+          ],
         ),
       ),
     );

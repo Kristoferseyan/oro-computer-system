@@ -1,6 +1,7 @@
 // ignore_for_file: prefer_const_constructors, prefer_const_literals_to_create_immutables
 
 import 'package:flutter/material.dart';
+import 'package:orocomputer_system/components/list_items_dBox.dart';
 import 'package:orocomputer_system/utils/colors.dart';
 import 'package:supabase_flutter/supabase_flutter.dart';
 
@@ -30,14 +31,18 @@ class _AddItemsPageState extends State<AddItemsPage> {
     {"name": "Accessories", "icon": Icons.headphones},
     {"name": "Printer", "icon": Icons.print},
   ];
+
   String? selectedCategory;
+  String? selectedCategoryName;
 
   //---------------------------METHODS--------------------------------------------//
   
   String? selectedCategoryIndex;
 
-  void selectCategory() async{
-    
+  void selectCategoryAddStock() async{
+    showDialog(context: context, builder: (context) => ListItemsDialogBox
+    (itemName: 'name', itemStock: 'itemStock')
+    );
   }
   
   void addItem() async {
@@ -111,26 +116,194 @@ class _AddItemsPageState extends State<AddItemsPage> {
           crossAxisAlignment: CrossAxisAlignment.start,
           children: [
             //---------------------------ADD-ITEM-CONTAINER--------------------------------------------//
-            Container(
-              width: 800,
-              padding: EdgeInsets.all(16),
-              decoration: BoxDecoration(
-                color: const Color.fromARGB(255, 62, 76, 76),
-                borderRadius: BorderRadius.circular(16),
-                boxShadow: [
-                  BoxShadow(
-                    color: Colors.black38,
-                    blurRadius: 10,
-                    offset: Offset(0, 4),
+            Expanded(
+              child: Container(
+                width: 800,
+                height: 1000,
+                padding: EdgeInsets.all(16),
+                decoration: BoxDecoration(
+                  color: const Color.fromARGB(255, 62, 76, 76),
+                  borderRadius: BorderRadius.circular(16),
+                  boxShadow: [
+                    BoxShadow(
+                      color: Colors.black38,
+                      blurRadius: 10,
+                      offset: Offset(0, 4),
+                    ),
+                  ],
+                ),
+                child: SingleChildScrollView(
+                  child: Column(
+                    crossAxisAlignment: CrossAxisAlignment.stretch,
+                    children: [
+                      Text(
+                        "Add Item",
+                        style: TextStyle(
+                          color: Colors.white,
+                          fontSize: 28,
+                          fontWeight: FontWeight.bold,
+                        ),
+                        textAlign: TextAlign.center,
+                      ),
+                      SizedBox(height: 20),
+                      buildTextField("Item Name", itemNameController),
+                      SizedBox(height: 20),
+                      Row(
+                        children: [
+                          Expanded(
+                            child: buildTextField("Price", itemPriceController,
+                                keyboardType: TextInputType.number),
+                          ),
+                          SizedBox(width: 16),
+                          Expanded(
+                            child: buildTextField("Stock", itemStockController,
+                                keyboardType: TextInputType.number),
+                          ),
+                        ],
+                      ),
+                      SizedBox(height: 20),
+                      buildTextField(
+                        "Specifications",
+                        itemDescriptionController,
+                        maxLines: 5,
+                      ),
+                      SizedBox(height: 20),
+                      Text(
+                        "Select Category",
+                        style: TextStyle(
+                          color: Colors.white,
+                          fontSize: 16,
+                          fontWeight: FontWeight.bold,
+                        ),
+                      ),
+                      SizedBox(height: 10),
+                      Wrap(
+                        spacing: 10,
+                        runSpacing: 10,
+                        alignment: WrapAlignment.start,
+                        children: categories.map((category) {
+                          bool isSelected = category['name'] == selectedCategory;
+                          return GestureDetector(
+                            onTap: () {
+                              setState(() {
+                                selectedCategory = category['name'];
+                              });
+                            },
+                            child: Container(
+                              padding: EdgeInsets.symmetric(
+                                  vertical: 10, horizontal: 16),
+                              decoration: BoxDecoration(
+                                color: isSelected
+                                    ? const Color.fromARGB(177, 167, 199, 200)
+                                    : const Color.fromARGB(107, 167, 199, 200),
+                                borderRadius: BorderRadius.circular(12),
+                                border: Border.all(
+                                  color: isSelected
+                                      ? const Color.fromARGB(255, 255, 255, 255)
+                                      : Colors.grey,
+                                  width: 1,
+                                ),
+                              ),
+                              child: Row(
+                                mainAxisSize: MainAxisSize.min,
+                                children: [
+                                  Icon(
+                                    category['icon'],
+                                    color: isSelected
+                                        ? Colors.white
+                                        : const Color.fromARGB(
+                                            101, 255, 255, 255),
+                                    size: 20,
+                                  ),
+                                  SizedBox(width: 8),
+                                  Text(
+                                    category['name'],
+                                    style: TextStyle(
+                                      color: isSelected
+                                          ? Colors.white
+                                          : const Color.fromARGB(
+                                              101, 255, 255, 255),
+                                      fontSize: 14,
+                                      fontWeight: isSelected
+                                          ? FontWeight.bold
+                                          : FontWeight.normal,
+                                    ),
+                                  ),
+                                ],
+                              ),
+                            ),
+                          );
+                        }).toList(),
+                      ),
+                      SizedBox(height: 20),
+                      GestureDetector(
+                        onTap: () {
+                          ScaffoldMessenger.of(context).showSnackBar(
+                            SnackBar(content: Text("Image upload clicked")),
+                          );
+                        },
+                        child: Container(
+                          height: 150,
+                          width: double.infinity,
+                          decoration: BoxDecoration(
+                            border: Border.all(color: Colors.grey, width: 1),
+                            borderRadius: BorderRadius.circular(12),
+                            color: const Color.fromARGB(177, 167, 199, 200),
+                          ),
+                          child: Center(
+                            child: Text(
+                              "Upload Item Image Here",
+                              style: TextStyle(color: Colors.white),
+                            ),
+                          ),
+                        ),
+                      ),
+                      SizedBox(height: 30),
+                      ElevatedButton(
+                        onPressed: addItem,
+                        style: ElevatedButton.styleFrom(
+                          backgroundColor: AppColors.secondary,
+                          padding: EdgeInsets.symmetric(vertical: 16),
+                          shape: RoundedRectangleBorder(
+                            borderRadius: BorderRadius.circular(12),
+                          ),
+                        ),
+                        child: Text(
+                          "Add Item",
+                          style: TextStyle(fontSize: 16, color: Colors.white),
+                        ),
+                      ),
+                    ],
                   ),
-                ],
+                ),
               ),
-              child: SingleChildScrollView(
+            ),
+
+            //---------------------------END-ADD-ITEM-CONTAINER--------------------------------------------//
+            SizedBox(width: 24),
+
+            //---------------------------ADD-STOCK-CONTAINER--------------------------------------------//
+            Expanded(
+              child: Container(
+                height: 1000,
+                width: 550,
+                padding: EdgeInsets.all(16),
+                decoration: BoxDecoration(
+                  color: const Color.fromARGB(255, 62, 76, 76),
+                  borderRadius: BorderRadius.circular(16),
+                  boxShadow: [
+                    BoxShadow(
+                      color: Colors.black38,
+                      blurRadius: 10,
+                      offset: Offset(0, 4),
+                    ),
+                  ],
+                ),
                 child: Column(
                   crossAxisAlignment: CrossAxisAlignment.stretch,
                   children: [
                     Text(
-                      "Add Item",
+                      "Add Stock",
                       style: TextStyle(
                         color: Colors.white,
                         fontSize: 28,
@@ -138,62 +311,30 @@ class _AddItemsPageState extends State<AddItemsPage> {
                       ),
                       textAlign: TextAlign.center,
                     ),
-                    SizedBox(height: 20),
-                    buildTextField("Item Name", itemNameController),
-                    SizedBox(height: 20),
-                    Row(
-                      children: [
-                        Expanded(
-                          child: buildTextField("Price", itemPriceController,
-                              keyboardType: TextInputType.number),
-                        ),
-                        SizedBox(width: 16),
-                        Expanded(
-                          child: buildTextField("Stock", itemStockController,
-                              keyboardType: TextInputType.number),
-                        ),
-                      ],
-                    ),
-                    SizedBox(height: 20),
-                    buildTextField(
-                      "Specifications",
-                      itemDescriptionController,
-                      maxLines: 5,
-                    ),
-                    SizedBox(height: 20),
-                    Text(
-                      "Select Category",
-                      style: TextStyle(
-                        color: Colors.white,
-                        fontSize: 16,
-                        fontWeight: FontWeight.bold,
-                      ),
-                    ),
-                    SizedBox(height: 10),
+                    SizedBox(height: 30,),
+              
                     Wrap(
                       spacing: 10,
                       runSpacing: 10,
                       alignment: WrapAlignment.start,
                       children: categories.map((category) {
-                        bool isSelected = category['name'] == selectedCategory;
                         return GestureDetector(
                           onTap: () {
                             setState(() {
-                              selectedCategory = category['name'];
+                              selectedCategoryName = category['name'];
                             });
+                            selectCategoryAddStock();
+                            print("This is the $selectedCategoryName");
                           },
                           child: Container(
-                            padding: EdgeInsets.symmetric(
-                                vertical: 10, horizontal: 16),
+                            width: 153,
+                            height: 50,
+                            padding: EdgeInsets.symmetric(vertical: 10, horizontal: 16),
                             decoration: BoxDecoration(
-                              color: isSelected
-                                  ? const Color.fromARGB(177, 167, 199, 200)
-                                  : const Color.fromARGB(107, 167, 199, 200),
+                              color: const Color.fromARGB(177, 167, 199, 200),
                               borderRadius: BorderRadius.circular(12),
                               border: Border.all(
-                                color: isSelected
-                                    ? const Color.fromARGB(255, 255, 255, 255)
-                                    : Colors.grey,
+                                color: const Color.fromARGB(255, 255, 255, 255),
                                 width: 1,
                               ),
                             ),
@@ -202,24 +343,16 @@ class _AddItemsPageState extends State<AddItemsPage> {
                               children: [
                                 Icon(
                                   category['icon'],
-                                  color: isSelected
-                                      ? Colors.white
-                                      : const Color.fromARGB(
-                                          101, 255, 255, 255),
+                                  color:Colors.white,
                                   size: 20,
                                 ),
                                 SizedBox(width: 8),
                                 Text(
                                   category['name'],
                                   style: TextStyle(
-                                    color: isSelected
-                                        ? Colors.white
-                                        : const Color.fromARGB(
-                                            101, 255, 255, 255),
+                                    color: Colors.white,
                                     fontSize: 14,
-                                    fontWeight: isSelected
-                                        ? FontWeight.bold
-                                        : FontWeight.normal,
+                                    fontWeight: FontWeight.bold,
                                   ),
                                 ),
                               ],
@@ -228,32 +361,13 @@ class _AddItemsPageState extends State<AddItemsPage> {
                         );
                       }).toList(),
                     ),
-                    SizedBox(height: 20),
-                    GestureDetector(
-                      onTap: () {
-                        ScaffoldMessenger.of(context).showSnackBar(
-                          SnackBar(content: Text("Image upload clicked")),
-                        );
-                      },
-                      child: Container(
-                        height: 150,
-                        width: double.infinity,
-                        decoration: BoxDecoration(
-                          border: Border.all(color: Colors.grey, width: 1),
-                          borderRadius: BorderRadius.circular(12),
-                          color: const Color.fromARGB(177, 167, 199, 200),
-                        ),
-                        child: Center(
-                          child: Text(
-                            "Upload Item Image Here",
-                            style: TextStyle(color: Colors.white),
-                          ),
-                        ),
-                      ),
-                    ),
                     SizedBox(height: 30),
                     ElevatedButton(
-                      onPressed: addItem,
+                      onPressed: () {
+                        ScaffoldMessenger.of(context).showSnackBar(
+                          SnackBar(content: Text("Stock added successfully!")),
+                        );
+                      },
                       style: ElevatedButton.styleFrom(
                         backgroundColor: AppColors.secondary,
                         padding: EdgeInsets.symmetric(vertical: 16),
@@ -262,109 +376,12 @@ class _AddItemsPageState extends State<AddItemsPage> {
                         ),
                       ),
                       child: Text(
-                        "Add Item",
+                        "Add Stock",
                         style: TextStyle(fontSize: 16, color: Colors.white),
                       ),
                     ),
                   ],
                 ),
-              ),
-            ),
-            //---------------------------END-ADD-ITEM-CONTAINER--------------------------------------------//
-            SizedBox(width: 24),
-            //---------------------------ADD-STOCK-CONTAINER--------------------------------------------//
-            Container(
-              height: 760,
-              width: 550,
-              padding: EdgeInsets.all(16),
-              decoration: BoxDecoration(
-                color: const Color.fromARGB(255, 62, 76, 76),
-                borderRadius: BorderRadius.circular(16),
-                boxShadow: [
-                  BoxShadow(
-                    color: Colors.black38,
-                    blurRadius: 10,
-                    offset: Offset(0, 4),
-                  ),
-                ],
-              ),
-              child: Column(
-                crossAxisAlignment: CrossAxisAlignment.stretch,
-                children: [
-                  Text(
-                    "Add Stock",
-                    style: TextStyle(
-                      color: Colors.white,
-                      fontSize: 28,
-                      fontWeight: FontWeight.bold,
-                    ),
-                    textAlign: TextAlign.center,
-                  ),
-                  SizedBox(height: 30,),
-
-                  Wrap(
-                    spacing: 10,
-                    runSpacing: 10,
-                    alignment: WrapAlignment.start,
-                    children: categories.map((category) {
-                      return GestureDetector(
-                        onTap: () {
-                        },
-                        child: Container(
-                          width: 153,
-                          height: 50,
-                          padding: EdgeInsets.symmetric(vertical: 10, horizontal: 16),
-                          decoration: BoxDecoration(
-                            color: const Color.fromARGB(177, 167, 199, 200),
-                            borderRadius: BorderRadius.circular(12),
-                            border: Border.all(
-                              color: const Color.fromARGB(255, 255, 255, 255),
-                              width: 1,
-                            ),
-                          ),
-                          child: Row(
-                            mainAxisSize: MainAxisSize.min,
-                            children: [
-                              Icon(
-                                category['icon'],
-                                color:Colors.white,
-                                size: 20,
-                              ),
-                              SizedBox(width: 8),
-                              Text(
-                                category['name'],
-                                style: TextStyle(
-                                  color: Colors.white,
-                                  fontSize: 14,
-                                  fontWeight: FontWeight.bold,
-                                ),
-                              ),
-                            ],
-                          ),
-                        ),
-                      );
-                    }).toList(),
-                  ),
-                  SizedBox(height: 30),
-                  ElevatedButton(
-                    onPressed: () {
-                      ScaffoldMessenger.of(context).showSnackBar(
-                        SnackBar(content: Text("Stock added successfully!")),
-                      );
-                    },
-                    style: ElevatedButton.styleFrom(
-                      backgroundColor: AppColors.secondary,
-                      padding: EdgeInsets.symmetric(vertical: 16),
-                      shape: RoundedRectangleBorder(
-                        borderRadius: BorderRadius.circular(12),
-                      ),
-                    ),
-                    child: Text(
-                      "Add Stock",
-                      style: TextStyle(fontSize: 16, color: Colors.white),
-                    ),
-                  ),
-                ],
               ),
             ),
           ],

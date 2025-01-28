@@ -15,6 +15,7 @@ class HomePage extends StatefulWidget {
 }
 
 class _HomePageState extends State<HomePage> {
+  String connectionError = '_ClientSocketException'; 
   final supabase = Supabase.instance.client;
     int selectedCategoryIndex = -1;
 
@@ -45,25 +46,40 @@ class _HomePageState extends State<HomePage> {
     super.initState();
     fetchAllProducts();
   }
-
   // Method to fetch all products from database
   void fetchAllProducts() async {
+  try{
     final response = await supabase.from('products').select('*');
-
-    setState(() {
-      products = response;
-      selectedCategoryIndex = -1;
-    });
+    if(response != connectionError){
+      setState(() {
+        products = response;
+        selectedCategoryIndex = -1;
+      });
+    }
+  } catch(error){
+    ScaffoldMessenger.of(context).showSnackBar(
+      SnackBar(content: Text("Data can't be fetched. No internet connection."))
+    );
   }
+  
+  }
+
+  
 
   void fetchSelectedCategory() async {
     final selectedCategoryName = components[selectedCategoryIndex]['name'];
-
-    final response = await supabase.from('products').select('*').eq('category', selectedCategoryName);
-
-    setState(() {
-      products = response;
-    });
+    try{
+      final response = await supabase.from('products').select('*').eq('category', selectedCategoryName);
+      if(response != connectionError){
+        setState(() {
+          products = response;
+        });
+      }
+    }catch(error){
+      ScaffoldMessenger.of(context).showSnackBar(
+        SnackBar(content: Text("Data can't be fetched. No internet connection."))
+      );
+    }
 
   }
 
@@ -89,21 +105,8 @@ class _HomePageState extends State<HomePage> {
       backgroundColor: AppColors.background,
       body: Column(
         children: [
-          // Header Section
-          Padding(
-            padding: const EdgeInsets.only(top: 30),
-            child: Center(
-              child: Text(
-                "Search Bar",
-                style: TextStyle(color: Colors.white),
-              ),
-            ),
-          ),
-          SizedBox(
-            height: 30,
-          ),
+          SizedBox(height: 20,),
 
-          // Title Section
           Text(
             "Available Stocks",
             style: TextStyle(color: Colors.white, fontSize: 30),
@@ -260,4 +263,11 @@ class _HomePageState extends State<HomePage> {
       ),
     );
   }
+}
+class ErrorMessage implements Exception {
+  final String message;
+  ErrorMessage(this.message);
+
+  @override
+  String toString() => 'Error: $message';
 }

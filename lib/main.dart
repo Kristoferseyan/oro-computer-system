@@ -30,7 +30,8 @@ class MyApp extends StatelessWidget {
       debugShowCheckedModeBanner: false,
       home: LandingPage(),
       routes: {
-        '/dashboard': (context) => Dashboard()
+        '/dashboard': (context) => Dashboard(),
+        '/landingpage': (context) => LandingPage(),
       },
       theme: ThemeData(
         textTheme: TextTheme(

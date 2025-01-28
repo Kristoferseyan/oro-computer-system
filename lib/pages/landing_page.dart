@@ -55,6 +55,7 @@ class _LandingPageState extends State<LandingPage> {
                   ScaffoldMessenger.of(context).showSnackBar(SnackBar(content: Text("Incorrect code!")));
                 }else{
                   Navigator.pushNamed(context, '/dashboard');
+                  codeController.clear();
                 }
               },
               style: ElevatedButton.styleFrom(

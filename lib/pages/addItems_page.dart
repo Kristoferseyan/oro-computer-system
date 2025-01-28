@@ -41,7 +41,7 @@ class _AddItemsPageState extends State<AddItemsPage> {
 
   void selectCategoryAddStock() async{
     showDialog(context: context, builder: (context) => ListItemsDialogBox
-    (itemName: 'name', itemStock: 'itemStock')
+    (itemName: 'name', itemStock: 'itemStock', categoryName: selectedCategoryName.toString(),)
     );
   }
   
@@ -62,7 +62,7 @@ class _AddItemsPageState extends State<AddItemsPage> {
       );
       return;
     }
-
+    String errorMessage = "_ClientSocketException ";
     final response = await Supabase.instance.client.from('products').insert({
       'name': name,
       'price': price,
@@ -71,16 +71,18 @@ class _AddItemsPageState extends State<AddItemsPage> {
       'category': selectedCategory,
     });
 
-    if (response.error != null) {
+    if (response !=  errorMessage) {
       ScaffoldMessenger.of(context).showSnackBar(
         SnackBar(
-            content: Text("Error adding item: ${response.error!.message}")),
+            content: Text("Item added successfully!")),
+            
       );
+            clearFields();
     } else {
       ScaffoldMessenger.of(context).showSnackBar(
-        SnackBar(content: Text("Item added successfully!")),
+        SnackBar(content: Text("Error adding item: ${response.error!.message}")),
       );
-      clearFields();
+
     }
   }
 

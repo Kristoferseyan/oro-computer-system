@@ -2,18 +2,29 @@
 
 import 'package:flutter/material.dart';
 import 'package:orocomputer_system/utils/colors.dart';
+import 'package:supabase_flutter/supabase_flutter.dart';
 
 class ItemDialogBox extends StatefulWidget {
   final String itemName;
+  final String itemID;
   final String itemSpecs;
   final String itemStock;
 
   const ItemDialogBox(
-      {super.key, required this.itemSpecs, required this.itemName, required this.itemStock});
+      {super.key, required this.itemID ,required this.itemSpecs, required this.itemName, required this.itemStock});
 
   @override
   State<ItemDialogBox> createState() => _ItemDialogBoxState();
 }
+
+
+
+class _ItemDialogBoxState extends State<ItemDialogBox> {
+
+
+
+  final supabase = Supabase.instance.client;
+
   //---------------------------CONTROLLERS--------------------------------------------//
   final TextEditingController buyerNameController = TextEditingController();
   final TextEditingController noOfItemsController = TextEditingController();
@@ -22,6 +33,22 @@ class ItemDialogBox extends StatefulWidget {
 
   //---------------------------METHODS--------------------------------------------//
 
+  List<Map<String, dynamic>> items = [];
+
+
+  void fetchAllItems() async {
+    final response = await supabase.from('products').select("*");
+    setState(() {
+      items = response;
+    });
+  }
+
+  @override
+  void initState() {
+    fetchAllItems();
+    super.initState();
+  }
+
   void buyBtn(){
 
   }
@@ -29,12 +56,20 @@ class ItemDialogBox extends StatefulWidget {
   void cancelBtn(){
 
   }
+
+  void delItem() async{
+    await supabase
+      .from('products')
+      .delete()
+      .eq('id', widget.itemID);
+    Navigator.pop(context);
+    fetchAllItems();
+  }
   //---------------------------END-METHODS--------------------------------------------//
 
-
-class _ItemDialogBoxState extends State<ItemDialogBox> {
   @override
   Widget build(BuildContext context) {
+
     return AlertDialog(
       backgroundColor: AppColors.primary,
       content: SizedBox(
@@ -64,6 +99,8 @@ class _ItemDialogBoxState extends State<ItemDialogBox> {
                 ),
                 IconButton(
                   onPressed: () {
+                    delItem();
+                    print("Item is deleted");
                   },
                   icon: Icon(Icons.delete),
                   color: Color.fromARGB(255, 115, 50, 50),

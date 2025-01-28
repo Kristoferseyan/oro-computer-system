@@ -17,7 +17,9 @@ class HomePage extends StatefulWidget {
 class _HomePageState extends State<HomePage> {
   String connectionError = '_ClientSocketException'; 
   final supabase = Supabase.instance.client;
-    int selectedCategoryIndex = -1;
+  int selectedCategoryIndex = -1;
+
+
 
 
 
@@ -89,13 +91,13 @@ class _HomePageState extends State<HomePage> {
         context: context,
         builder: (context) {
           return ItemDialogBox(
+            itemID: product['id'].toString(),
             itemName: product['name'].toString(),
             itemSpecs: product['description'].toString(),
             itemStock: product['stock'].toString(),
           );
         });
   }
-
 
 //---------------------------END-METHODS--------------------------------------------//
 
@@ -224,7 +226,9 @@ class _HomePageState extends State<HomePage> {
                     itemBuilder: (context, index) {
                       final product = products[index];
                       return GestureDetector(
-                        onTap: () => selectItem(product),
+                        onTap: (){
+                          selectItem(product);
+                        },
                         child: Container(
                           decoration: BoxDecoration(
                             color: AppColors.box,

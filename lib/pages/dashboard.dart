@@ -3,6 +3,7 @@
 import 'package:flutter/material.dart';
 import 'package:orocomputer_system/pages/addItems_page.dart';
 import 'package:orocomputer_system/pages/home_page.dart';
+import 'package:orocomputer_system/pages/sales_page.dart';
 import 'package:orocomputer_system/pages/settings_page.dart';
 import 'package:orocomputer_system/utils/colors.dart';
 import 'package:google_nav_bar/google_nav_bar.dart';
@@ -22,7 +23,8 @@ class _DashboardState extends State<Dashboard> {
     static List<Widget> _widgetOptions = <Widget>[
       HomePage(),
       AddItemsPage(),
-      SettingsPage()
+      SalesPage(),
+      SettingsPage(),
     ];
   @override
   Widget build(BuildContext context) {

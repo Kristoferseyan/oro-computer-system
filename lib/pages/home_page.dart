@@ -66,8 +66,6 @@ class _HomePageState extends State<HomePage> {
   
   }
 
-  
-
   void fetchSelectedCategory() async {
     final selectedCategoryName = components[selectedCategoryIndex]['name'];
     try{

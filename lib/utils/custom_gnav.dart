@@ -43,6 +43,9 @@ class CustomGnav extends StatelessWidget {
                   text: 'Add items',
                 ),
                 GButton(
+                  icon: Icons.point_of_sale, 
+                  text: 'Sales Hisotry',),
+                GButton(
                   icon: Icons.settings,
                   text: 'Settings',
                 ),
